@@ -38,20 +38,20 @@ const Chat: React.FC<TypeChatProps> = ({
       setIsLoading(false);
     }
   };
+  // Auto scroll to bottom of chat log page while "GPT" is responding
+  const textRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (textRef.current) {
+      textRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [chatLog]);
 
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   useEffect(() => {
     if (chatLog.length > 0) {
       if (chatLog[chatLog.length - 1].user === "gpt") {
         setIsLoading(true);
       }
     } else setIsLoading(false);
-  }, [chatLog]);
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.scrollIntoView({ behavior: "smooth" });
-    }
   }, [chatLog]);
 
   const onKeyDown = (
@@ -136,11 +136,9 @@ const Chat: React.FC<TypeChatProps> = ({
           {/* Need to disable this field is the AI is looking for a response */}
 
           <textarea
-            /// <reference path="" />
-            ref={textareaRef}
             value={input}
             required
-            disabled={isLoading}
+            // disabled={isLoading}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={onKeyDown}
             rows={1}
@@ -168,6 +166,7 @@ const Chat: React.FC<TypeChatProps> = ({
             )}
           </button>
         </form>
+        <div ref={textRef} />
       </div>
     </div>
   );
