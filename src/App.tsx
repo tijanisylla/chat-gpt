@@ -1,18 +1,15 @@
 import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./Components/auth/authMethods";
 import "./App.css";
-import { Header, Home } from "./Components";
+
+// Components
+import { Home, Login } from "./Components";
 
 const App: React.FC = () => {
-  return (
-    <div className="App">
-      <main>
-        <Header />
-        <Home />
-      </main>
-      <footer>
-        <p>© 2021 Chat GPT Sylla</p>
-      </footer>
-    </div>
-  );
+  const [user] = useAuthState(auth) as null | any;
+
+  console.log(user);
+  return <div className="App">{user ? <Home /> : <Login />}</div>;
 };
 export default App;

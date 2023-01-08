@@ -14,30 +14,46 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const openai_1 = require("openai");
+const body_parser_1 = __importDefault(require("body-parser"));
+const cors_1 = __importDefault(require("cors"));
+const path_1 = __importDefault(require("path"));
+require("dotenv/config");
 const app = (0, express_1.default)();
-const port = 8000;
-const api_key = "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";
+const port = 8000 || process.env.PORT;
+const api_key = process.env.OPENAI_API_KEY || "";
 // Middleware
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
+app.use((0, cors_1.default)());
+app.use(body_parser_1.default.urlencoded({
+    extended: true,
+}));
+app.use(body_parser_1.default.json());
+app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
+// console.log(process.env.OPENAI_API_KEY);
 const configuration = new openai_1.Configuration({
     organization: "org-6MSLzuqrhVELtOW42LBJeaFH",
     apiKey: api_key,
 });
 const openai = new openai_1.OpenAIApi(configuration);
-// const response = await openai.listEngines();
 // Routes
-app.post("/api", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { prompt } = req.body;
-    const response = yield openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: prompt,
-        max_tokens: 500,
-        temperature: 0,
-    });
-    res.send(response.data.choices[0].text);
-    console.log(response.data.choices[0].text);
+app.post("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { message } = req.body;
+    try {
+        const response = yield openai.createCompletion({
+            model: "text-curie-001",
+            prompt: message,
+            max_tokens: 500,
+            temperature: 0.9,
+        });
+        next();
+        console.log(response.data.choices[0].text);
+        res.send({ message: response.data.choices[0].text });
+    }
+    catch (error) {
+        res.send({ message: "Sorry, There was an erro " + " " + error });
+    }
 }));
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`Example app listening on port : ${port}`);
 });

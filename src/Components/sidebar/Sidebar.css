@@ -1,0 +1,247 @@
+.sidebar__menu {
+  width: 260px;
+  padding: 10px;
+  background-color: #202123;
+}
+
+.sidebar__button {
+  border: 0 solid #d9d9e3;
+  box-sizing: border-box;
+  color: #ffff;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  transition: 0.3s ease;
+}
+.sidebar__list {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 50px;
+  padding: 1px;
+  align-items: center;
+  height: 300px;
+}
+.sidebar__new-chat {
+  border: 1px solid #2f3136;
+  transition: 0.3s ease;
+  border-radius: 5px;
+}
+.sidebar__button {
+  margin: 0px 0px 8px;
+  cursor: pointer;
+  padding: 12px;
+}
+
+.sidebar__logout {
+  background-color: #343541;
+  transition: 0.3s ease;
+  border-radius: 5px;
+}
+.sidebar__icon {
+  padding-left: 6px;
+  padding-right: 12px;
+}
+.sidebar__button:hover {
+  background-color: #2f3136;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+}
+li {
+  margin: 0px 0px 8px;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 3px;
+  height: 5px !important;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #2f3136;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #202123;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #fff;
+}
+
+/* Handle side bar media query */
+/* Large device */
+@media screen and (max-width: 992px) {
+  .sidebar__menu {
+    width: 100px;
+    z-index: 1;
+    padding: 2rem 1.5rem 4rem;
+    box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 1.5rem 1.5rem 0 0;
+    transition: 0.3s;
+    border: none;
+    border-radius: 0;
+  }
+  .sidebar__name {
+    display: none;
+  }
+}
+/* Meduim device */
+/* @media screen and (max-width: 768px) {
+  .sidebar__menu {
+    width: 200px;
+  }
+  .sidebar__list {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 50px;
+    padding: 1px;
+    align-items: center;
+    height: 300px;
+  }
+} */
+
+/* Tooltips */
+.tooltip {
+  position: relative;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: 5px;
+  left: 110%;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent black transparent transparent;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+/*  */
+
+.tooltip2 {
+  position: relative;
+}
+
+.tooltip2 .tooltiptext2 {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: 5px;
+  left: 110%;
+}
+
+.tooltip2 .tooltiptext2::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: 5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent black transparent transparent;
+}
+.tooltip2:hover .tooltiptext2 {
+  visibility: visible;
+}
+/*  */
+
+.tooltip3 {
+  position: relative;
+}
+
+.tooltip3 .tooltiptext3 {
+  visibility: hidden;
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: 5px;
+  left: 110%;
+}
+
+.tooltip3 .tooltiptext3::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent black transparent transparent;
+}
+.tooltip3:hover .tooltiptext3 {
+  visibility: visible;
+}
+
+/*  */
+.tooltip4 {
+  position: relative;
+}
+
+.tooltip4 .tooltiptext4 {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: 5px;
+  left: 110%;
+}
+
+.tooltip4 .tooltiptext4::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent black transparent transparent;
+}
+.tooltip4:hover .tooltiptext4 {
+  visibility: visible;
+}
