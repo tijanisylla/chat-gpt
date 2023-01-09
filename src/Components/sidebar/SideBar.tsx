@@ -55,7 +55,7 @@ const SideBar: React.FC<TypeSideBarProps> = ({ clearChat }) => {
             <i className="uil uil-envelope"></i>
           </span>
           <span className="sidebar__name">
-            {auth.currentUser?.providerData[0].email}
+            {auth.currentUser?.providerData[0].email?.substring(0, 15) + "..."}
           </span>
           <span className="tooltiptext3">
             {auth.currentUser?.providerData[0].email}

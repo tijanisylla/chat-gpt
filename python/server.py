@@ -29,11 +29,10 @@ def gpt3():
       })
 
 
-if __name__ == '__main__':
-    
+if __name__ == '__main__': 
     app.debug = True
     app.run( host='0.0.0.0',port=5050) # debug=True allows for hot reloading of the server when you make changes to the code (very useful) 
-# localhost:5050/api
-# Path: python/requirements.txt
-# openai==0.2.0
-# flask==1.1.2
+    # localhost:5050/api
+    # Path: python/requirements.txt
+    # openai==0.2.0
+    # flask==1.1.2
