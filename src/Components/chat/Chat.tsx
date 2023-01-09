@@ -33,23 +33,28 @@ const Chat: React.FC<TypeChatProps> = ({
         }),
       });
       const data = await response.json();
-      setIsLoading(false);
+
       setChatLog([...newChatLog, { user: "gpt", message: `${data.message}` }]);
       setLastMessage(chatLog.length + 1);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       throw error;
     }
   };
 
+  // If GPT is typing than load icon else
   useEffect(() => {
     if (chatLog.length > 0) {
       if (chatLog[chatLog.length - 1].user === "gpt") {
         setIsLoading(true);
+      } else {
+        setIsLoading(false);
       }
     }
-    setIsLoading(false);
   }, [chatLog]);
 
+  // Handle Enter key press
   const onKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
@@ -66,26 +71,7 @@ const Chat: React.FC<TypeChatProps> = ({
   };
   useEffect(() => scrollBottom(), [chatLog]);
 
-  // Create a function Typewriter effect for the last message in the chat log array
-  const typeWriter = () => {
-    if (chatLog.length > 0) {
-      if (chatLog[chatLog.length - 1].user === "gpt") {
-        return (
-          <Typewriter
-            options={{
-              delay: 50,
-              // autoStart: true,
-            }}
-            onInit={(typewriter) => {
-              typewriter
-                .typeString(chatLog[chatLog.length - 1].message)
-                .start();
-            }}
-          />
-        );
-      }
-    }
-  };
+  // Render
   return (
     <div className="chat__container" id="chat__container">
       {/* Title */}
@@ -129,7 +115,17 @@ const Chat: React.FC<TypeChatProps> = ({
                 <div className="chat__text">
                   {/* TypeWriter only if AI is responding */}
                   {idx === lastMessage ? (
-                    typeWriter()
+                    <Typewriter
+                      options={{ delay: 50 }}
+                      onInit={(typewriter) => {
+                        typewriter
+                          .typeString(message.message)
+                          .callFunction(() => {
+                            setIsLoading(false);
+                          })
+                          .start();
+                      }}
+                    />
                   ) : (
                     <p>{message.message}</p>
                   )}
