@@ -19,8 +19,8 @@ const cors_1 = __importDefault(require("cors"));
 const path_1 = __importDefault(require("path"));
 require("dotenv/config");
 const app = (0, express_1.default)();
-const port = 8000 || process.env.PORT;
-const api_key = process.env.OPENAI_API_KEY || "";
+const port = 5050 || process.env.PORT;
+const api_key = process.env.OPENAI_API_KEY;
 // Middleware
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
@@ -37,13 +37,13 @@ const configuration = new openai_1.Configuration({
 });
 const openai = new openai_1.OpenAIApi(configuration);
 // Routes
-app.post("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+app.post("/api", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { message } = req.body;
     try {
         const response = yield openai.createCompletion({
-            model: "text-curie-001",
+            model: "text-davinci-003",
             prompt: message,
-            max_tokens: 500,
+            max_tokens: 3000,
             temperature: 0.9,
         });
         next();

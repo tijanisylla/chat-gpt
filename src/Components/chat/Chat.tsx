@@ -11,11 +11,13 @@ const Chat: React.FC<TypeChatProps> = ({
   lastMessage,
   setLastMessage,
 }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
+  const textRef = useRef<HTMLDivElement>(null);
 
   const fetchData = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     let newChatLog = [...chatLog, { user: "me", message: `${input}` }];
     setInput("");
     setChatLog(newChatLog);
@@ -31,40 +33,61 @@ const Chat: React.FC<TypeChatProps> = ({
         }),
       });
       const data = await response.json();
-
+      setIsLoading(false);
       setChatLog([...newChatLog, { user: "gpt", message: `${data.message}` }]);
       setLastMessage(chatLog.length + 1);
     } catch (error) {
-      setIsLoading(false);
+      throw error;
     }
   };
-  // Auto scroll to bottom of chat log page while "GPT" is responding
-  const textRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (textRef.current) {
-      textRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [chatLog]);
 
   useEffect(() => {
     if (chatLog.length > 0) {
       if (chatLog[chatLog.length - 1].user === "gpt") {
         setIsLoading(true);
       }
-    } else setIsLoading(false);
+    }
+    setIsLoading(false);
   }, [chatLog]);
 
-  const onKeyDown = (
-    event: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const onKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       event.stopPropagation();
       fetchData(event as any);
     }
   };
+
+  // Auto scroll to bottom of chat log page while "GPT" is responding
+  const scrollBottom = () => {
+    if (textRef.current) {
+      textRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+  useEffect(() => scrollBottom(), [chatLog]);
+
+  // Create a function Typewriter effect for the last message in the chat log array
+  const typeWriter = () => {
+    if (chatLog.length > 0) {
+      if (chatLog[chatLog.length - 1].user === "gpt") {
+        return (
+          <Typewriter
+            options={{
+              delay: 50,
+              // autoStart: true,
+            }}
+            onInit={(typewriter) => {
+              typewriter
+                .typeString(chatLog[chatLog.length - 1].message)
+                .start();
+            }}
+          />
+        );
+      }
+    }
+  };
   return (
-    <div className="chat__container">
+    <div className="chat__container" id="chat__container">
       {/* Title */}
       <div className="chat__title py-5">
         <img
@@ -106,20 +129,7 @@ const Chat: React.FC<TypeChatProps> = ({
                 <div className="chat__text">
                   {/* TypeWriter only if AI is responding */}
                   {idx === lastMessage ? (
-                    <Typewriter
-                      options={{
-                        delay: 50,
-                      }}
-                      onInit={(typewriter) => {
-                        typewriter
-
-                          .typeString(message.message)
-                          .start()
-                          .callFunction(() => {
-                            setIsLoading(false);
-                          });
-                      }}
-                    />
+                    typeWriter()
                   ) : (
                     <p>{message.message}</p>
                   )}

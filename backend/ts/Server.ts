@@ -5,8 +5,8 @@ import cors from "cors";
 import path from "path";
 import "dotenv/config";
 const app: express.Application = express();
-const port: number = 8000 || process.env.PORT;
-const api_key: string = process.env.OPENAI_API_KEY || "";
+const port: number = 5050 || process.env.PORT;
+const api_key: string = process.env.OPENAI_API_KEY as string;
 
 // Middleware
 app.use(express.json());
@@ -28,13 +28,13 @@ const configuration: Configuration = new Configuration({
 
 const openai: OpenAIApi = new OpenAIApi(configuration);
 // Routes
-app.post("/", async (req: Request, res: Response, next: NextFunction) => {
+app.post("/api", async (req: Request, res: Response, next: NextFunction) => {
   const { message } = req.body;
   try {
     const response = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: message,
-      max_tokens: 500,
+      max_tokens: 3000,
       temperature: 0.9,
     });
     next();
