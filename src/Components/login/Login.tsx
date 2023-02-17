@@ -18,7 +18,7 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="bg-white  h-screen text-center">
+    <div className="bg-white h-screen text-center ">
       <div className="bg-white inline-block justify-center py-4 w-1/2">
         <h2 className="text-3xl font-medium "> Welcome to ChatGPT-clone! </h2>
 

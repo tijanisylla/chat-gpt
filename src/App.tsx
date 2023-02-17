@@ -8,8 +8,6 @@ import { Home, Login } from "./Components";
 
 const App: React.FC = () => {
   const [user] = useAuthState(auth) as null | any;
-
-  console.log(user);
   return <div className="App">{user ? <Home /> : <Login />}</div>;
 };
 export default App;

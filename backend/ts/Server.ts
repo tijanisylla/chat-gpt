@@ -6,7 +6,7 @@ import path from "path";
 import "dotenv/config";
 const app: express.Application = express();
 const port: number = 5050 || process.env.PORT;
-const api_key: string = process.env.OPENAI_API_KEY as string;
+const api_key = process.env.OPENAI_API_KEY as string;
 
 // Middleware
 app.use(express.json());

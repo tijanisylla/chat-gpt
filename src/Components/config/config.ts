@@ -7,6 +7,7 @@ interface TypeConfig {
   appId: string;
   measurementId: string;
 }
+
 export const firebaseConfig: TypeConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "ai-react-auth.firebaseapp.com",

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, KeyboardEvent } from "react";
 import { TypeChatProps } from "../data/Models";
 import Typewriter from "typewriter-effect";
 import AI__title from "../assets/robot1.png";
+import gpt_logo from "../assets/chat-gpt-logo.jpg";
 import "./Chat.css";
 import { auth } from "../auth/authMethods";
 import Loading from "./../loading/Loading";
@@ -15,15 +16,16 @@ const Chat: React.FC<TypeChatProps> = ({
   const [input, setInput] = useState<string>("");
   const textRef = useRef<HTMLDivElement>(null);
 
+  const local_api: string = "http://localhost:8080/api";
+
   const fetchData = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     let newChatLog = [...chatLog, { user: "me", message: `${input}` }];
     setInput("");
     setChatLog(newChatLog);
     const message = newChatLog.map((message) => message.message).join("\n");
     try {
-      const response = await fetch("http://localhost:5050/api", {
+      const response = await fetch(local_api, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,13 +34,12 @@ const Chat: React.FC<TypeChatProps> = ({
           message: message,
         }),
       });
-      const data = await response.json();
-
+      const data: any = await response.json();
       setChatLog([...newChatLog, { user: "gpt", message: `${data.message}` }]);
       setLastMessage(chatLog.length + 1);
-      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
+      console.log(error);
       throw error;
     }
   };
@@ -69,6 +70,7 @@ const Chat: React.FC<TypeChatProps> = ({
       textRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   };
+
   useEffect(() => scrollBottom(), [chatLog]);
 
   // Render
@@ -106,7 +108,7 @@ const Chat: React.FC<TypeChatProps> = ({
                 <img
                   src={`${
                     message.user === "gpt"
-                      ? AI__title
+                      ? gpt_logo
                       : auth.currentUser?.providerData[0].photoURL
                   }`}
                   alt="avatar"
