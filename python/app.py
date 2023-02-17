@@ -34,11 +34,6 @@ def main():
         )
         print(response.choices[0].text)
         # send back the response to the client
-        if response.choices[0].text == "":
-            return jsonify({
-                "message": "I don't know what to say. Try asking me something else.",
-
-            })
         return jsonify({
             "message": response.choices[0].text,
 
