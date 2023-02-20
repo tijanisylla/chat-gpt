@@ -6,6 +6,7 @@ import gpt_logo from "../assets/chat-gpt-logo.jpg";
 import "./Chat.css";
 import { auth } from "../auth/authMethods";
 import Loading from "./../loading/Loading";
+
 const Chat: React.FC<TypeChatProps> = ({
   chatLog,
   setChatLog,
@@ -16,7 +17,13 @@ const Chat: React.FC<TypeChatProps> = ({
   const [input, setInput] = useState<string>("");
   const textRef = useRef<HTMLDivElement>(null);
 
-  const local_api: string = "http://localhost:8080/api";
+  const local_api: string = "https://api.openai.com/v1/completions";
+  interface TypeBody {
+    model: string;
+    max_tokens: number;
+    temperature: number;
+    prompt: string;
+  }
 
   const fetchData = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,18 +31,26 @@ const Chat: React.FC<TypeChatProps> = ({
     setInput("");
     setChatLog(newChatLog);
     const message = newChatLog.map((message) => message.message).join("\n");
+    const body: TypeBody = {
+      model: "text-davinci-003",
+      max_tokens: 3000,
+      temperature: 0.9,
+      prompt: message,
+    };
     try {
       const response = await fetch(local_api, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
         },
-        body: JSON.stringify({
-          message: message,
-        }),
+        body: JSON.stringify({ ...body }),
       });
       const data: any = await response.json();
-      setChatLog([...newChatLog, { user: "gpt", message: `${data.message}` }]);
+      setChatLog([
+        ...newChatLog,
+        { user: "gpt", message: `${data.choices[0].text}` },
+      ]);
       setLastMessage(chatLog.length + 1);
     } catch (error) {
       setIsLoading(false);
